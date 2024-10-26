@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 
 const LoginContext=React.createContext({
     token: '',
@@ -11,15 +11,25 @@ export const LoginContextProvider=(props)=>{
     const initailToken=localStorage.getItem('token')
     const [token,setToken]=useState(initailToken)
 
+    
+    const autoLogout=()=>{
+        setTimeout(()=>{
+            localStorage.removeItem('token')
+        },60000)
+    }
+   
+  
     const userIsLoggedIn=!!token;
 
     const loginHandler=(token)=>{
         setToken(token)
         localStorage.setItem('token',token);
+        autoLogout();
     }   
     const logoutHandler=()=>{
         setToken(null)
         localStorage.removeItem('token')
+        
     }
 
     const contextValue={
